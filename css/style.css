@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Rubik:wght@400;500;700;900&display=swap');
+
+:root{
+  --ink:#0d0d0f;
+  --red:#ff0000;
+  --cyan:#00e5ff;
+  --amber:#ffc400;
+  --paper:#f2efe9;
+}
+*{box-sizing:border-box;}
+html,body{
+  margin:0; padding:0; height:100%;
+  background:var(--ink);
+  font-family:'Rubik',sans-serif;
+  overflow:hidden;
+  color:var(--paper);
+}
+#app{
+  position:relative;
+  width:100vw; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  background:#000;
+}
+
+/* ---- progress track ---- */
+#track{
+  position:fixed; top:0; left:0; right:0; height:10px;
+  background:repeating-linear-gradient(90deg,#1a1a1a 0 18px,#2b2b2b 18px 36px);
+  z-index:50; border-bottom:2px solid #000;
+}
+#track-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--red),#ff5a3c);
+  width:0%;
+  transition:width .45s cubic-bezier(.65,0,.35,1);
+  box-shadow:0 0 12px rgba(255,0,0,.7);
+}
+#track-car{
+  position:absolute; top:-8px; transform:translateX(-50%);
+  width:26px; height:26px; transition:left .45s cubic-bezier(.65,0,.35,1);
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.8));
+}
+#track-car svg{ width:100%; height:100%; display:block; }
+
+/* ---- slide layer ---- */
+.slide{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition:opacity .35s ease;
+}
+.slide.active{ opacity:1; pointer-events:auto; }
+.slide img{
+  max-width:100%; max-height:100%;
+  width:auto; height:auto;
+  object-fit:contain;
+  box-shadow:0 0 60px rgba(0,0,0,.6);
+}
+
+/* ---- next button ---- */
+#next-zone{
+  position:absolute; inset:0; cursor:pointer; z-index:5;
+}
+
+/* ---- question overlay ---- */
+.qwrap{
+  position:absolute; inset:0;
+  display:flex; align-items:flex-end; justify-content:center;
+  z-index:10; pointer-events:none;
+}
+.qwrap img.bg{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+  pointer-events:none;
+}
+.qpanel{
+  position:relative; z-index:2;
+  pointer-events:auto;
+  width:min(920px,94%);
+  margin-bottom:0;
+  background:linear-gradient(180deg,rgba(13,13,15,.2),rgba(13,13,15,.97) 30%);
+  padding:26px 30px 30px;
+  border-top:4px solid var(--red);
+}
+.q-eyebrow{
+  font-family:'Anton',sans-serif; font-size:13px; letter-spacing:.08em;
+  color:var(--amber); margin-bottom:8px;
+}
+.q-prompt{
+  font-size:16px; line-height:1.5; color:#f2efe9; margin-bottom:14px;
+  max-width:74ch;
+}
+.q-question{
+  font-family:'Anton',sans-serif; font-size:22px; color:#fff;
+  margin-bottom:14px; letter-spacing:.01em;
+}
+.q-options{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+}
+@media (max-width:720px){ .q-options{ grid-template-columns:1fr; } }
+.opt{
+  text-align:left;
+  background:#1c1c20; color:#f2efe9;
+  border:2px solid #3a3a40;
+  padding:12px 14px; font-size:14.5px; line-height:1.35;
+  border-radius:3px; cursor:pointer;
+  transition:border-color .15s, transform .1s, background .15s;
+  font-family:'Rubik',sans-serif;
+}
+.opt:hover{ border-color:var(--cyan); background:#232328; transform:translateY(-1px); }
+.opt.correct{ border-color:var(--amber); background:#3a2f0f; }
+.opt.wrong{ border-color:var(--red); background:#3a1010; }
+.opt:disabled{ cursor:default; }
+
+/* ---- feedback overlay (win/lose) ---- */
+.feedback{
+  position:absolute; inset:0; z-index:15;
+  display:flex; align-items:flex-end; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.feedback.show{ opacity:1; pointer-events:auto; }
+.feedback img.bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.fpanel{
+  position:relative; z-index:2; width:min(820px,94%);
+  background:linear-gradient(180deg,rgba(13,13,15,.15),rgba(13,13,15,.97) 25%);
+  padding:26px 30px 30px; border-top:4px solid var(--amber);
+}
+.fpanel.lose{ border-top-color:var(--red); }
+.fpanel.neutral{ border-top-color:var(--cyan); }
+.f-title{
+  font-family:'Anton',sans-serif; font-size:24px; letter-spacing:.02em;
+  margin-bottom:10px;
+}
+.f-title.win{ color:var(--amber); }
+.f-title.lose{ color:var(--red); }
+.f-title.neutral{ color:var(--cyan); }
+.f-text{ font-size:15px; line-height:1.55; color:#f2efe9; margin-bottom:10px; }
+.f-lesson{
+  font-size:13.5px; line-height:1.5; color:#c9cdd3; font-style:italic;
+  border-left:3px solid var(--cyan); padding-left:12px; margin-bottom:18px;
+}
+.f-scoreboard{
+  display:flex; gap:18px; flex-wrap:wrap;
+  margin:6px 0 20px;
+}
+.f-stat{
+  display:flex; flex-direction:column; gap:2px;
+  background:#1c1c20; border:2px solid #3a3a40;
+  padding:10px 18px; border-radius:3px;
+}
+.f-stat-label{
+  font-family:'Anton',sans-serif; font-size:11px; letter-spacing:.08em;
+  color:var(--amber);
+}
+.f-stat-value{
+  font-family:'Anton',sans-serif; font-size:22px; color:#fff;
+}
+.f-buttons{ display:flex; gap:12px; flex-wrap:wrap; }
+.btn{
+  font-family:'Anton',sans-serif; font-size:14px; letter-spacing:.03em;
+  padding:12px 22px; border:3px solid #000; border-radius:2px;
+  cursor:pointer; box-shadow:4px 4px 0 #000;
+}
+.btn.primary{ background:var(--red); color:#fff; }
+.btn.ghost{ background:var(--amber); color:#1a1400; }
+
+/* ---- start screen ---- */
+#start{
+  position:absolute; inset:0; z-index:60;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; background:radial-gradient(circle at 50% 30%,#1a1a1e,#000 75%);
+  padding:24px;
+}
+#start h1{
+  font-family:'Anton',sans-serif; font-size:clamp(28px,5vw,52px);
+  color:#fff; letter-spacing:.02em; margin:0 0 12px;
+  text-shadow:3px 3px 0 var(--red);
+}
+#start p{ max-width:52ch; color:#c9cdd3; font-size:15px; line-height:1.6; margin-bottom:26px;}
+#start .btn{ font-size:16px; padding:16px 34px; }
+
+.hidden{ display:none !important; }
+
+#mute-btn{
+  position:fixed; top:16px; right:16px; z-index:70;
+  width:38px; height:38px; border-radius:50%;
+  background:#1c1c20; border:2px solid #3a3a40; color:#f2efe9;
+  font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+#mute-btn:hover{ border-color:var(--cyan); }
+
+#music-credit{
+  position:fixed; bottom:6px; left:8px; z-index:70;
+  font-size:10px; color:#c9cdd3; opacity:0.5;
+  font-family:'Rubik',sans-serif; pointer-events:none;
+}
