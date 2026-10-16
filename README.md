@@ -1,26 +1,32 @@
-# Alter Domus Cybersecurity Grand Prix
+# Alter Domus: Shadow Collective Incident Response
 
-An interactive, score-based comic/quiz for Cyber Awareness Month, styled as an
-F1 race weekend. Four scenario questions worth 250 points each; final screen
-shows score and completion time.
+An interactive, score-based comic/quiz for Cyber Awareness Month, styled as a
+corporate cybersecurity incident response thriller. Four scenario questions
+worth 250 points each; final screen shows score and response time.
 
 ## Project structure
 
 ```
 .
-├── index.html              ← entry point, references css/js/assets below
+├── index.html               ← landing/poster page (start here)
+├── game.html                ← the actual interactive comic/quiz
 ├── css/
-│   └── style.css           ← all styling
+│   └── style.css            ← styling for game.html
 ├── js/
-│   └── app.js               ← game data (questions/timeline) + logic
+│   └── app.js                ← game data (questions/timeline) + logic
 ├── assets/
 │   ├── images/
-│   │   └── page-01.jpg … page-14.jpg   ← comic panel art, in sequence
+│   │   └── page-01.jpg … page-16.jpg   ← comic panel art, in sequence
 │   └── audio/
-│       ├── bgm.mp3          ← ⚠️ placeholder (silent) — see below
-│       └── README.md        ← how to swap in the real track + licensing
-└── README.md                ← this file
+│       ├── bgm.mp3           ← ⚠️ placeholder (silent) — see below
+│       └── README.md         ← how to swap in the real track + licensing
+└── README.md                 ← this file
 ```
+
+`index.html` is a self-contained landing page (its own inline CSS, no
+dependency on `game.html`'s files) with a big "The Threat Is Moving — Begin"
+button that links straight to `game.html`. Visiting the site root shows the
+landing page first.
 
 ## ⚠️ Before you publish: add the real audio
 
@@ -37,7 +43,9 @@ download and save binary files like MP3s.
   `options`, `correct` (index), `win_text`, and `lesson`.
 - **Comic art** — swap any file in `assets/images/` (keep the same filename to
   avoid editing `app.js`, or update the `img`/`qimg` paths if you rename).
-- **Styling/colors/fonts** — `css/style.css`.
+- **Styling/colors/fonts (game)** — `css/style.css`.
+- **Landing page text/styling** — edit `index.html` directly; all its CSS is
+  inline in a `<style>` block at the top of the file.
 
 ## Running locally
 
@@ -49,19 +57,32 @@ doesn't play locally, that's expected and will work fine once hosted).
 
 1. Create a new **public** GitHub repository.
 2. Upload this entire folder's contents to the repo root (keep the folder
-   structure — `index.html` must be at the repo root, not nested).
+   structure — `index.html` and `game.html` must both be at the repo root,
+   not nested).
 3. In the repo, go to **Settings → Pages**.
 4. Under **Build and deployment → Source**, choose **Deploy from a branch**.
 5. Branch: `main`, folder: `/ (root)` → **Save**.
-6. Wait ~1 minute, then your site is live at:
+6. Make sure the empty `.nojekyll` file (already included) is present at the
+   repo root if GitHub Pages tries to run this through Jekyll and errors out.
+7. Wait ~1 minute, then your site is live at:
    `https://<your-username>.github.io/<repo-name>/`
+   — this will show the landing page (`index.html`); the button takes people
+   to `game.html`.
 
-## Embedding in SharePoint
+## Putting it on a SharePoint page
 
-SharePoint's own file-preview sandbox blocks external network requests
-(images/audio/fonts), so uploading the raw HTML there for inline preview will
-break it. Instead:
-- Host it via GitHub Pages (above), then use SharePoint's **Embed** web part
-  and paste the GitHub Pages URL, **or**
-- Upload it to a SharePoint library as a plain file and have people use
-  **Download** rather than the inline preview.
+SharePoint's own file-preview sandbox (and its "Advanced" HTML editor) blocks
+or strips a lot of external resources and inline styles/scripts, which is why
+pasting raw HTML directly into SharePoint is unreliable. Once this is hosted
+on GitHub Pages, the simplest and most robust options are:
+
+1. **Direct link** — just add a link/button on your SharePoint page pointing
+   to your GitHub Pages URL. Opens in a new tab, zero embedding quirks.
+2. **Embed web part** — add the **Embed** web part on a SharePoint page and
+   paste the GitHub Pages URL into it (not raw HTML — just the URL). This
+   loads the page in its own iframe with its own origin, so SharePoint's CSP
+   restrictions on the *host* page don't apply to what's inside it.
+
+Avoid pasting the actual HTML/CSS into SharePoint's "Advanced" editor — that
+runs through SharePoint's own sanitizer/CSP and can cause blocked audio and
+stripped styling.

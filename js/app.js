@@ -1,7 +1,7 @@
 /* =========================================================
-   ALTER DOMUS CYBERSECURITY GRAND PRIX
+   ALTER DOMUS CYBERSECURITY INCIDENT RESPONSE
    Data + game logic
-   Images: assets/images/page-01.jpg ... page-14.jpg
+   Images: assets/images/page-01.jpg ... page-16.jpg
    Audio:  assets/audio/bgm.mp3  (see assets/audio/README.md)
    ========================================================= */
 
@@ -13,12 +13,14 @@ const TIMELINE = [
   { type: "slide", img: "assets/images/page-05.jpg" },
   { type: "slide", img: "assets/images/page-06.jpg" },
   { type: "slide", img: "assets/images/page-07.jpg" },
+  { type: "slide", img: "assets/images/page-08.jpg" },
+  { type: "slide", img: "assets/images/page-09.jpg" },
   {
     type: "question",
     q: {
       id: "Q1",
-      qimg: "assets/images/page-08.jpg",
-      eyebrow: "8:52 AM — Race Day",
+      qimg: "assets/images/page-10.jpg",
+      eyebrow: "8:52 AM — An Ordinary Workday",
       prompt: "Eight minutes on the clock. An email lands: \u201cURGENT — Verify Your Alter Domus Credentials Before 9AM.\u201d The logo looks right. The sender looks familiar. Your cursor is already moving toward the link.",
       question: "What do you do?",
       options: [
@@ -36,7 +38,7 @@ const TIMELINE = [
     type: "question",
     q: {
       id: "Q2",
-      qimg: "assets/images/page-09.jpg",
+      qimg: "assets/images/page-11.jpg",
       eyebrow: "Mid-morning — a Teams message just buzzed",
       prompt: "\u201cHey, I've been locked out and I need to submit this in ten minutes — can I use your login just this once?\u201d You know this person. Two years working together. Your password field is already open in another tab.",
       question: "What do you do?",
@@ -55,7 +57,7 @@ const TIMELINE = [
     type: "question",
     q: {
       id: "Q3",
-      qimg: "assets/images/page-10.jpg",
+      qimg: "assets/images/page-12.jpg",
       eyebrow: "Mid-afternoon — client portfolio review",
       prompt: "A client's financial data won't format the way you need it to. A free AI assistant online says it can clean up the spreadsheet in seconds — for free, right now, no approval needed. You copy the client's confidential financial data and open the chat window.",
       question: "Is this okay?",
@@ -73,10 +75,10 @@ const TIMELINE = [
   {
     type: "question",
     q: {
-      id: "Q6",
-      qimg: "assets/images/page-11.jpg",
+      id: "Q4",
+      qimg: "assets/images/page-13.jpg",
       eyebrow: "End of day — closing your laptop",
-      prompt: "One last notification: \u201cPlease update your password as a post-race precaution.\u201d You've known this password for three years. Your fingers are already typing it from memory.",
+      prompt: "One last notification: \u201cPlease update your password as a precaution.\u201d You've known this password for three years. Your fingers are already typing it from memory.",
       question: "Is that the right call?",
       options: [
         "Yes — it's a strong password and you remember it, so it's fine to reuse",
@@ -89,9 +91,9 @@ const TIMELINE = [
       lesson: "A password that has ever appeared in a breach is already compromised, no matter how strong it looks. Use a password manager. Every account, a unique password."
     }
   },
-  { type: "slide", img: "assets/images/page-12.jpg" },
-  { type: "slide", img: "assets/images/page-13.jpg" },
-  { type: "slide", img: "assets/images/page-14.jpg" }
+  { type: "slide", img: "assets/images/page-14.jpg" },
+  { type: "slide", img: "assets/images/page-15.jpg" },
+  { type: "slide", img: "assets/images/page-16.jpg" }
 ];
 
 /* ============ game state & wiring ============ */
@@ -106,7 +108,7 @@ const POINTS_PER_QUESTION = 250;
 const TOTAL_QUESTIONS = TIMELINE.filter(t => t.type === 'question').length;
 const MAX_SCORE = POINTS_PER_QUESTION * TOTAL_QUESTIONS;
 
-/* ---- background music ---- */
+/* ---- background audio ---- */
 const bgm = document.getElementById('bgm');
 let musicOn = true;
 bgm.volume = 0.35;
@@ -213,7 +215,7 @@ function showFeedback(item, correct) {
 
   if (correct) {
     panel.innerHTML = `
-      <div class="f-title win">🏁 CORRECT — +${POINTS_PER_QUESTION} PTS</div>
+      <div class="f-title win">🛡️ THREAT CONTAINED — +${POINTS_PER_QUESTION} PTS</div>
       <div class="f-text">${q.win_text}</div>
       <div class="f-buttons">
         <button class="btn primary" id="continue-btn">CONTINUE →</button>
@@ -268,11 +270,11 @@ function finish() {
   const panel = document.createElement('div');
   panel.className = 'fpanel win';
   panel.innerHTML = `
-    <div class="f-title win">🏁 YOU CROSSED THE FINISH LINE</div>
-    <div class="f-text">You didn't just watch the race — you were part of the team that ran it.</div>
+    <div class="f-title win">🛡️ INCIDENT RESOLVED</div>
+    <div class="f-text">You didn't just watch the response — you were part of the team that contained it.</div>
     <div class="f-scoreboard">
       <div class="f-stat"><span class="f-stat-label">FINAL SCORE</span><span class="f-stat-value">${score} / ${MAX_SCORE}</span></div>
-      <div class="f-stat"><span class="f-stat-label">RACE TIME</span><span class="f-stat-value">${timeStr}</span></div>
+      <div class="f-stat"><span class="f-stat-label">RESPONSE TIME</span><span class="f-stat-value">${timeStr}</span></div>
     </div>
     <div class="f-buttons">
       <button class="btn ghost" id="restart-btn">🔁 RUN IT AGAIN</button>
