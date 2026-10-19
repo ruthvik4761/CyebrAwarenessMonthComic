@@ -4,175 +4,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alter Domus: Shadow Collective Incident Response</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Rubik:wght@400;500;700;900&display=swap');
-
-  :root{
-    --ink:#0d0d0f;
-    --red:#ff0000;
-    --cyan:#00e5ff;
-    --amber:#ffc400;
-    --paper:#f2efe9;
-  }
-  *{ box-sizing:border-box; }
-  html,body{
-    margin:0; padding:0; min-height:100%;
-    background:
-      radial-gradient(ellipse at 50% 8%, rgba(255,0,0,0.18), transparent 50%),
-      radial-gradient(ellipse at 50% 100%, rgba(0,229,255,0.08), transparent 45%),
-      linear-gradient(180deg,#14141a 0%,#0d0d0f 55%,#000 100%);
-    font-family:'Rubik',sans-serif;
-    color:var(--paper);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:40px 20px;
-  }
-
-  .poster{
-    max-width:640px;
-    width:100%;
-    text-align:center;
-    padding:50px 40px;
-    background:#111116;
-    border:4px solid #000;
-    box-shadow:0 0 60px rgba(0,0,0,0.6);
-    position:relative;
-  }
-
-  .alert-icon{
-    display:flex; justify-content:center;
-    margin-bottom:26px;
-  }
-
-  .eyebrow{
-    font-family:'Anton',sans-serif;
-    font-size:13px; letter-spacing:0.3em;
-    color:var(--amber);
-    margin-bottom:18px;
-  }
-
-  h1{
-    font-family:'Anton',sans-serif;
-    font-size:clamp(26px,5.5vw,42px);
-    line-height:1.15;
-    letter-spacing:0.01em;
-    margin:0 0 8px;
-    text-shadow:3px 3px 0 var(--red);
-  }
-  h2{
-    font-family:'Anton',sans-serif;
-    font-size:clamp(16px,3.2vw,22px);
-    color:var(--cyan);
-    letter-spacing:0.1em;
-    margin:0 0 26px;
-  }
-
-  p.tagline{
-    font-size:15px;
-    line-height:1.65;
-    color:#c9cdd3;
-    max-width:46ch;
-    margin:0 auto 34px;
-  }
-  p.tagline b{ color:#fff; }
-
-  .divider{
-    width:100%;
-    height:3px;
-    background:repeating-linear-gradient(90deg, var(--red) 0 16px, transparent 16px 32px);
-    margin-bottom:34px;
-    opacity:0.8;
-  }
-
-  .cta{
-    display:inline-block;
-    font-family:'Anton',sans-serif;
-    font-size:clamp(14px,2.6vw,18px);
-    letter-spacing:0.02em;
-    color:#fff;
-    background:var(--red);
-    padding:18px 34px;
-    border:3px solid #000;
-    box-shadow:6px 6px 0 #000;
-    text-decoration:none;
-    transition:transform 0.12s ease, box-shadow 0.12s ease;
-  }
-  .cta:hover{
-    transform:translate(-2px,-2px);
-    box-shadow:8px 8px 0 #000;
-  }
-  .cta:active{
-    transform:translate(0,0);
-    box-shadow:3px 3px 0 #000;
-  }
-
-  .subcta{
-    margin-top:16px;
-    font-size:11px;
-    letter-spacing:0.15em;
-    color:#7a7a80;
-  }
-
-  .stats{
-    display:flex; justify-content:center; gap:18px;
-    margin-top:36px;
-    flex-wrap:wrap;
-  }
-  .stat{
-    background:#1a1a1e;
-    border:2px solid #333;
-    padding:14px 22px;
-    min-width:100px;
-  }
-  .stat .num{ font-family:'Anton',sans-serif; font-size:24px; color:var(--amber); }
-  .stat .lbl{ font-size:10px; letter-spacing:0.15em; color:#9a9a9e; margin-top:4px; }
-
-  .footer{
-    margin-top:40px;
-    font-size:11px;
-    letter-spacing:0.1em;
-    color:#55555a;
-  }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <div class="poster">
-    <div class="alert-icon">
-      <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="36" cy="36" r="33" fill="none" stroke="#00e5ff" stroke-width="2" opacity="0.4"/>
-        <circle cx="36" cy="36" r="24" fill="none" stroke="#00e5ff" stroke-width="2" opacity="0.6"/>
-        <path d="M36 14 L58 52 L14 52 Z" fill="none" stroke="#ff0000" stroke-width="3" stroke-linejoin="round"/>
-        <rect x="34" y="28" width="4" height="14" rx="2" fill="#ff0000"/>
-        <circle cx="36" cy="46" r="2.4" fill="#ff0000"/>
-      </svg>
-    </div>
+<div id="track"><div id="track-fill"></div><div id="track-car"><svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="32" cy="16" r="13" fill="none" stroke="#00e5ff" stroke-width="2" opacity="0.5"/>
+  <circle cx="32" cy="16" r="8" fill="#0d0d0f" stroke="#ff0000" stroke-width="2"/>
+  <path d="M32 9 L32 16 L37 19" stroke="#00e5ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="32" cy="16" r="2" fill="#ffc400"/>
+</svg></div></div>
 
-    <div class="eyebrow">ALTER DOMUS &nbsp;•&nbsp; CYBER AWARENESS MONTH</div>
+<button id="mute-btn" title="Toggle music">🔊</button>
+<button id="end-btn" class="hidden" title="Skip to the end">⏭ End</button>
 
-    <h1>THE SHADOW COLLECTIVE</h1>
-    <h2>INCIDENT RESPONSE SIMULATION</h2>
+<audio id="bgm" loop preload="auto">
+  <source src="assets/audio/bgm.mp3" type="audio/mpeg">
+</audio>
 
-    <p class="tagline">
-      An ordinary workday. Silence. Then everything changes.
-      Before the first alert reaches the security team, something else is
-      already moving — and only <b>your decisions</b> can keep the organisation secure.
-    </p>
-
-    <div class="divider"></div>
-
-    <a class="cta" href="game.html">⚠️ THE THREAT IS MOVING — BEGIN</a>
-    <div class="subcta">4 DECISIONS &nbsp;•&nbsp; SCORED &nbsp;•&nbsp; ~5 MINUTES</div>
-
-    <div class="stats">
-      <div class="stat"><div class="num">4</div><div class="lbl">DECISIONS</div></div>
-      <div class="stat"><div class="num">1000</div><div class="lbl">MAX SCORE</div></div>
-      <div class="stat"><div class="num">🛡️</div><div class="lbl">DEFENSE</div></div>
-    </div>
-
-    <div class="footer">STRONGER SECURITY STARTS WITH YOU</div>
+<div id="app">
+  <div id="start">
+    <div class="menu-eyebrow">ALTER DOMUS &nbsp;•&nbsp; CYBER AWARENESS MONTH</div>
+    <h1>ALTER DOMUS<br>INCIDENT RESPONSE</h1>
+    <p>An ordinary workday. Eight teams, one mission — and a threat already moving before the first alert reaches the security team.</p>
+    <nav class="menu">
+      <button class="btn primary menu-btn" id="start-btn">▶ START</button>
+      <a class="btn ghost menu-btn" id="instructions-btn" href="instructions.html">📘 INSTRUCTIONS</a>
+      <button class="btn quit menu-btn" id="quit-btn">✕ QUIT</button>
+    </nav>
   </div>
 
+  <div id="quit-screen" class="hidden">
+    <h1>SESSION ENDED</h1>
+    <p>Your browser didn’t let this page close itself. You can safely close this tab now.</p>
+    <button class="btn ghost" id="quit-menu-btn">↩ BACK TO MAIN MENU</button>
+  </div>
+
+  <div id="slides"></div>
+
+  <div id="next-zone" class="hidden">
+    <div id="comic-frame">
+      <button id="proceed-box" type="button" aria-label="Click to proceed">
+        <span class="proceed-label">CLICK TO<br>PROCEED</span>
+        <span class="proceed-arrow">▶</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="music-credit">Music: see assets/audio/README.md for licensing</div>
+
+<script src="js/app.js"></script>
 </body>
 </html>

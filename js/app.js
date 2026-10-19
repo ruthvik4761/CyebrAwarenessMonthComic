@@ -93,7 +93,8 @@ const TIMELINE = [
   },
   { type: "slide", img: "assets/images/page-14.jpg" },
   { type: "slide", img: "assets/images/page-15.jpg" },
-  { type: "slide", img: "assets/images/page-16.jpg" }
+  { type: "slide", img: "assets/images/page-16.jpg" },
+  { type: "slide", img: "assets/images/page-17.jpg" }
 ];
 
 /* ============ game state & wiring ============ */
@@ -261,6 +262,8 @@ function formatTime(ms) {
 
 function finish() {
   nextZone.classList.add('hidden');
+  const endBtn = document.getElementById('end-btn');
+  if (endBtn) endBtn.classList.add('hidden');
   clearSlides();
   const elapsed = startTime ? (Date.now() - startTime) : 0;
   const timeStr = formatTime(elapsed);
@@ -278,19 +281,70 @@ function finish() {
     </div>
     <div class="f-buttons">
       <button class="btn ghost" id="restart-btn">🔁 RUN IT AGAIN</button>
+      <button class="btn quit" id="end-quit-btn">✕ QUIT</button>
     </div>
   `;
   wrap.appendChild(panel);
   slidesEl.appendChild(wrap);
-  document.getElementById('restart-btn').onclick = () => { idx = 0; score = 0; startTime = Date.now(); render(); };
+  document.getElementById('restart-btn').onclick = () => {
+    idx = 0; score = 0; startTime = Date.now();
+    document.getElementById('end-btn').classList.remove('hidden');
+    render();
+  };
+  document.getElementById('end-quit-btn').onclick = () => quitGame();
 }
 
-nextZone.addEventListener('click', () => {
+/* ---- main menu & quit ---- */
+const startScreen = document.getElementById('start');
+const quitScreen = document.getElementById('quit-screen');
+
+function showMenu() {
+  quitScreen.classList.add('hidden');
+  nextZone.classList.add('hidden');
+  document.getElementById('end-btn').classList.add('hidden');
+  clearSlides();
+  idx = 0; score = 0; startTime = null;
+  updateTrack();
+  startScreen.classList.remove('hidden');
+}
+
+function quitGame() {
+  bgm.pause();
+  // Works when this tab was opened by the landing page (window.open) or when
+  // the tab has a single history entry. Browsers block it otherwise, and
+  // always block it inside an iframe (e.g. a SharePoint embed).
+  try { window.close(); } catch (e) {}
+  try { if (window.top !== window.self) window.top.close(); } catch (e) {}
+  setTimeout(() => {
+    if (!window.closed) {
+      startScreen.classList.add('hidden');
+      nextZone.classList.add('hidden');
+      document.getElementById('end-btn').classList.add('hidden');
+      clearSlides();
+      quitScreen.classList.remove('hidden');
+    }
+  }, 250);
+}
+
+document.getElementById('quit-btn').onclick = () => quitGame();
+document.getElementById('quit-menu-btn').onclick = () => showMenu();
+
+// Swap pages without adding history entries, so the tab stays closable.
+document.getElementById('instructions-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+  location.replace('instructions.html');
+});
+
+// Progress only when the Click to Proceed box is pressed
+document.getElementById('proceed-box').addEventListener('click', (e) => {
+  e.stopPropagation();
   advance();
 });
 
 document.getElementById('start-btn').onclick = () => {
+  idx = 0; score = 0;
   document.getElementById('start').classList.add('hidden');
+  document.getElementById('end-btn').classList.remove('hidden');
   startTime = Date.now();
   initAudio();
   render();
@@ -300,8 +354,7 @@ document.getElementById('mute-btn').onclick = () => {
   toggleMusic();
 };
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' || e.key === ' ') {
-    if (!nextZone.classList.contains('hidden')) advance();
-  }
-});
+document.getElementById('end-btn').onclick = () => {
+  finish();
+};
+

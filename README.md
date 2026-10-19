@@ -9,14 +9,15 @@ worth 250 points each; final screen shows score and response time.
 ```
 .
 ├── index.html               ← landing/poster page (start here)
-├── game.html                ← the actual interactive comic/quiz
+├── game.html                ← main menu (Start / Instructions / Quit) + the comic/quiz
+├── instructions.html        ← how-to-play page, with a Back to Main Menu button
 ├── css/
 │   └── style.css            ← styling for game.html
 ├── js/
 │   └── app.js                ← game data (questions/timeline) + logic
 ├── assets/
 │   ├── images/
-│   │   └── page-01.jpg … page-16.jpg   ← comic panel art, in sequence
+│   │   └── page-01.jpg … page-17.jpg   ← comic panel art, in sequence
 │   └── audio/
 │       ├── bgm.mp3           ← ⚠️ placeholder (silent) — see below
 │       └── README.md         ← how to swap in the real track + licensing
@@ -27,6 +28,23 @@ worth 250 points each; final screen shows score and response time.
 dependency on `game.html`'s files) with a big "The Threat Is Moving — Begin"
 button that links straight to `game.html`. Visiting the site root shows the
 landing page first.
+
+## Main menu, progression & Quit
+
+`game.html` opens on a main menu with **Start**, **Instructions** and **Quit**.
+Comic pages only advance when the **Click to Proceed** box is pressed; clicks
+elsewhere on the comic do nothing.
+
+**Quit closes the tab.** Browsers only allow a page to close a tab that a
+script opened (or one with a single history entry), so:
+- `index.html`'s Begin button opens the game in a new tab via `window.open`,
+  which makes that tab closable.
+- Menu ↔ Instructions navigation uses `location.replace`, so it never adds
+  history entries that would block closing.
+- If the game is loaded inside an iframe (e.g. a SharePoint **Embed** web
+  part), no browser lets it close the parent tab. Quit then shows a
+  "Session ended" screen instead. Link to the GitHub Pages URL (rather than
+  embedding it) if you want Quit to close the tab.
 
 ## ⚠️ Before you publish: add the real audio
 

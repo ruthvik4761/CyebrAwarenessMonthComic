@@ -59,7 +59,8 @@ html,body{
 
 /* ---- next button ---- */
 #next-zone{
-  position:absolute; inset:0; cursor:pointer; z-index:5;
+  position:absolute; inset:0; z-index:5;
+  pointer-events:none; /* clicks pass through; only #proceed-box advances */
 }
 
 /* ---- question overlay ---- */
@@ -177,6 +178,7 @@ html,body{
 }
 #start p{ max-width:52ch; color:#c9cdd3; font-size:15px; line-height:1.6; margin-bottom:26px;}
 #start .btn{ font-size:16px; padding:16px 34px; }
+#start p{ margin-bottom:30px; }
 
 .hidden{ display:none !important; }
 
@@ -187,6 +189,85 @@ html,body{
   font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
 }
 #mute-btn:hover{ border-color:var(--cyan); }
+
+#end-btn{
+  position:fixed; top:16px; right:64px; z-index:70;
+  height:38px; padding:0 14px; border-radius:19px;
+  background:#1c1c20; border:2px solid #3a3a40; color:#f2efe9;
+  font-family:'Rubik',sans-serif; font-size:13px; font-weight:500;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  gap:4px; letter-spacing:0.02em;
+}
+#end-btn:hover{ border-color:var(--red); color:#fff; }
+
+/* ---- click-to-proceed box (pinned to the comic's right edge) ---- */
+#comic-frame{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  /* same box the 16:9 comic image occupies with object-fit:contain */
+  width:min(100vw, calc(100vh * 2667 / 1500));
+  aspect-ratio:2667 / 1500;
+  pointer-events:none;
+}
+#proceed-box{
+  position:absolute; top:50%; right:2%;
+  transform:translateY(-50%);
+  pointer-events:auto; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  padding:clamp(10px,1.6vw,18px) clamp(10px,1.4vw,16px);
+  background:rgba(13,13,15,0.82);
+  border:3px solid var(--red);
+  box-shadow:5px 5px 0 #000;
+  color:#fff;
+  font-family:'Anton',sans-serif;
+  font-size:clamp(11px,1.15vw,16px);
+  letter-spacing:.06em; line-height:1.15; text-align:center;
+  transition:background .15s, transform .12s, box-shadow .12s;
+  animation:proceedpulse 2.2s ease-in-out infinite;
+}
+#proceed-box .proceed-arrow{ color:var(--amber); font-size:1.4em; }
+#proceed-box:hover{
+  background:var(--red);
+  transform:translateY(-50%) translateX(-2px);
+  box-shadow:7px 7px 0 #000;
+}
+#proceed-box:hover .proceed-arrow{ color:#fff; }
+#proceed-box:focus-visible{ outline:3px solid var(--cyan); outline-offset:3px; }
+@keyframes proceedpulse{
+  0%,100%{ border-color:var(--red); }
+  50%{ border-color:var(--amber); }
+}
+
+/* ---- main menu ---- */
+.menu-eyebrow{
+  font-family:'Anton',sans-serif; font-size:13px; letter-spacing:.3em;
+  color:var(--amber); margin-bottom:16px;
+}
+.menu{
+  display:flex; flex-direction:column; gap:14px;
+  width:min(320px,100%);
+}
+.menu-btn{
+  display:block; width:100%; text-align:center; text-decoration:none;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.menu-btn:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 #000; }
+.menu-btn:active{ transform:translate(0,0); box-shadow:2px 2px 0 #000; }
+.btn.quit{ background:#1c1c20; color:#f2efe9; border-color:#000; }
+.btn.quit:hover{ background:#2a1010; color:#fff; }
+
+/* ---- quit fallback screen ---- */
+#quit-screen{
+  position:absolute; inset:0; z-index:60;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:24px;
+  background:radial-gradient(circle at 50% 30%,#1a1a1e,#000 75%);
+}
+#quit-screen h1{
+  font-family:'Anton',sans-serif; font-size:clamp(28px,5vw,48px);
+  margin:0 0 12px; text-shadow:3px 3px 0 var(--red);
+}
+#quit-screen p{ max-width:46ch; color:#c9cdd3; font-size:15px; line-height:1.6; margin-bottom:26px; }
 
 #music-credit{
   position:fixed; bottom:6px; left:8px; z-index:70;
